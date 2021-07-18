@@ -23,6 +23,7 @@ import static br.com.alura.agenda.ui.activity.Constantes.CHAVE_ALUNO;
 public class ListaAlunosActivity extends AppCompatActivity {
     public static final String TITULO_APPBAR = "Lista de Alunas";
     private AlunoDAO dao = new AlunoDAO();
+    private ArrayAdapter<Aluno> adapter;
 
 
     @Override
@@ -60,6 +61,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
         ListView listaDeAlunos = findViewById(R.id.activity_lista_de_alunos_listview);
         configuraAdapter(alunos, listaDeAlunos);
         configuraListenerDeCliquePorItem(alunos, listaDeAlunos);
+        listaDeAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int posicao, long id) {
+                Aluno alunoEscolhido = (Aluno) adapterView.getItemAtPosition(posicao);
+                dao.remove(alunoEscolhido);
+                adapter.remove(alunoEscolhido);
+                return true;
+            }
+        });
     }
 
     private void configuraListenerDeCliquePorItem(List<Aluno> alunos, ListView listaDeAlunos) {
@@ -79,8 +89,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
     }
 
     private void configuraAdapter(List<Aluno> alunos, ListView listaDeAlunos) {
-        listaDeAlunos.setAdapter(new ArrayAdapter<>(this,
+        adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
-                alunos));
+                alunos);
+        listaDeAlunos.setAdapter(adapter);
     }
 }
