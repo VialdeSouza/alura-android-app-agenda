@@ -2,10 +2,13 @@ package br.com.alura.agenda.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import br.com.alura.agenda.R;
@@ -30,9 +33,24 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formulario_aluno);
 
         inicializacaoDosCampos();
-        configuraBotaoSalvar();
         carregaAluna();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_formulario_aluno_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == R.id.activity_formulario_aluno_menu_salvar){
+            finalizarFormulario();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void carregaAluna() {
@@ -51,16 +69,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoNome.setText(aluno.getNome());
         campoEmail.setText(aluno.getEmail());
         campoTelefone.setText(aluno.getTelefone());
-    }
-
-    private void configuraBotaoSalvar() {
-        Button botaoSalvar = findViewById(R.id.activity_formulario_aluno_botao_salvar);
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finalizarFormulario();
-            }
-        });
     }
 
     private void finalizarFormulario() {
